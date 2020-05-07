@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="section">
+      <h2>Load Time(in seconds)</h2>
+      <select name="seconds" id="sec" onchange="setTime()">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="6">6</option>
+        <option value="9">9</option>
+      </select>
+    </div>
+    <div class="section">
+      <h2>JS Interval Method Loading Bar</h2>
+      <div class="bar-container">
+        <div class="bar" />
+        <div class="loading">
+          <p class="loading-display"></p>
+        </div>
+      </div>
+      <button onclick="fillBar()">Start Loading</button>
+    </div>
+    <div class="section">
+      <h2>JS Request Animation Frame Method Loading Bar</h2>
+      <div class="bar-container">
+        <div class="bar2" />
+        <div class="loading">
+          <p class="loading-display2"></p>
+        </div>
+      </div>
+      <button onclick="fillBar2()">Start Loading</button>
+    </div>
+    <div class="section">
+      <h2>Pure CSS Loading Bar</h2>
+      <div class="bar-container">
+        <div class="bar3" />
+        <div class="loading">
+          <p class="loading-display3"></p>
+        </div>
+      </div>
+      <button onclick="fillBar3()">Start Loading</button>
+    </div>
+  </body>
+
+  <style>
+    p {
+      font-size: 33px;
+      font-size: 33px;
+      color: #0f1923;
+      margin: 0px;
+    }
+
+    h2 {
+      width: 100%;
+      font-weight: normal;
+      color: #0f1923;
+      text-align: center;
+    }
+    body {
+      height: 100vh;
+      background-color: #ece8e1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .section {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 100px;
+      width: 100%;
+    }
+    #sec {
+      width: 200px;
+      height: 33px;
+    }
+    .bar-container {
+      position: relative;
+      width: 66vw;
+      height: 50px;
+
+      background-color: #9ea79f;
+    }
+
+    .bar {
+      background-color: #e73744;
+      height: 100%;
+      width: 0%;
+    }
+    .bar2 {
+      background-color: #e73744;
+      height: 100%;
+      width: 0%;
+    }
+    .bar3 {
+      background-color: #e73744;
+      height: 100%;
+      width: 0%;
+    }
+
+    .loading {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .loading-display {
+      margin: 0px;
+    }
+
+    .loading-display2 {
+      margin: 0px;
+    }
+    .loading-display3 {
+      margin: 0px;
+    }
+  </style>
+
+  <script>
+    let seconds = 1;
+
+    function setTime() {
+      seconds = document.getElementById('sec').value;
+    }
+
+    const fillBar = () => {
+      console.log(seconds);
+      let barPercent = 0;
+
+      const interval = setInterval(() => {
+        const bar = document.querySelector('.bar');
+        const display = document.querySelector('.loading-display');
+        barPercent++;
+        bar.style.width = barPercent + '%';
+        display.innerText = barPercent;
+        if (barPercent >= 100) {
+          clearInterval(interval);
+        }
+      }, (seconds * 1000) / 100);
+    };
+
+    const fillBar2 = () => {
+      const bar = document.querySelector('.bar2');
+      const display = document.querySelector('.loading-display2');
+      let barPercent = 0;
+
+      function step() {
+        barPercent += 1.666 / seconds;
+        bar.style.width = Math.round(barPercent) + '%';
+        display.innerText = Math.round(barPercent);
+        if (barPercent < 100 - 1.666 / seconds) {
+          window.requestAnimationFrame(step);
+        }
+      }
+      window.requestAnimationFrame(step);
+    };
+
+    const fillBar3 = () => {
+      const bar = document.querySelector('.bar3');
+      bar.style.transition = `${seconds}s linear width`;
+      bar.style.width = '100%';
+    };
+  </script>
+</html>
